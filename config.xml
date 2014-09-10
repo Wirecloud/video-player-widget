@@ -4,7 +4,7 @@
         <Vendor>CoNWeT</Vendor>
         <Name>video-player</Name>
         <DisplayName>Basic video widget</DisplayName>
-        <Version>0.0.6</Version>
+        <Version>0.0.8</Version>
         <Author>bgrana</Author>
         <Mail>bgrana@conwet.com</Mail>
         <Description>Receives a video stream.</Description>
@@ -23,5 +23,5 @@
     <Platform.Link>
         <XHTML href="index.html" />
     </Platform.Link>
-    <Platform.Rendering width="60" height="28"/>
+    <Platform.Rendering width="6" height="28"/>
 </Template>
