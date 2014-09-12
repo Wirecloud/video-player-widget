@@ -7,6 +7,10 @@ body {
 	padding: 0px; 
 }
 
+.static {
+	background-image: url("../images/static.gif");
+}
+
 .placeholder {
 	display:table-cell;
 	vertical-align: middle;

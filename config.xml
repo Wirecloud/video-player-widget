@@ -4,7 +4,7 @@
         <Vendor>CoNWeT</Vendor>
         <Name>video-player-widget</Name>
         <DisplayName>Basic video widget</DisplayName>
-        <Version>0.0.13</Version>
+        <Version>0.0.15</Version>
         <Author>bgrana</Author>
         <Mail>bgrana@conwet.com</Mail>
         <Description>Receives a video stream.</Description>
