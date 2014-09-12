@@ -4,7 +4,7 @@
         <Vendor>CoNWeT</Vendor>
         <Name>video-player-widget</Name>
         <DisplayName>Basic video widget</DisplayName>
-        <Version>0.0.10</Version>
+        <Version>0.0.13</Version>
         <Author>bgrana</Author>
         <Mail>bgrana@conwet.com</Mail>
         <Description>Receives a video stream.</Description>
@@ -17,7 +17,7 @@
     <Platform.StateProperties>
     </Platform.StateProperties>
     <Platform.Wiring>
-        <InputEndpoint name="url" type="text" label="Video URL" description="video URL" friendcode="url" />
+        <InputEndpoint name="url" type="text" label="Video URL" description="video URL" friendcode="video_url" />
     </Platform.Wiring>
 
     <Platform.Link>
