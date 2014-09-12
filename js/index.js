@@ -12,7 +12,7 @@ window.onload = function() {
     	videoOutput.className = 'video';
         videoOutput.autoplay = true;
         videoOutput.controls = false;
-        document.getElementsByTagName('body').className = '';
+        document.getElementsByTagName('body')[0].className = '';
         container.appendChild(videoOutput);
     }
 
