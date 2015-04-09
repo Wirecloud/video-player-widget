@@ -1,10 +1,8 @@
 var VideoPlayer = function () {
 
-    this.username = '';
     this.url = '';
 
     MashupPlatform.wiring.registerCallback('url', this.recv_video.bind(this));
-    MashupPlatform.wiring.registerCallback('terminate_stream', this.terminate_stream.bind(this));
 };
 
 VideoPlayer.prototype = {
@@ -12,11 +10,9 @@ VideoPlayer.prototype = {
     constructor: VideoPlayer,
 
 
-    recv_video: function (data) {
+    recv_video: function (url) {
         
-        data = data.split(' ');
-        this.username = data[0];
-        this.url = data[1];
+        this.url = url;
 
         var container = document.getElementById('container');
         var videoOutput = this.create_video(this.url);
@@ -24,17 +20,6 @@ VideoPlayer.prototype = {
         this.remove_child_nodes(container);
         
         container.appendChild(videoOutput);
-    },
-
-
-    create_navbar: function () { //TODO
-        
-        var nav_bar = document.createElement('nav');
-
-        nav_bar.id = 'top-bar';
-        nav_bar.className = 'top-bar';
-
-        container.appendChild(nav_bar);
     },
 
 
@@ -47,7 +32,7 @@ VideoPlayer.prototype = {
         videoOutput.className = 'video';
         videoOutput.autoplay = true;
         videoOutput.controls = true;
-        document.getElementsByTagName('body')[0].className = '';
+        document.body.className = '';
 
         return videoOutput;
     },
@@ -55,7 +40,6 @@ VideoPlayer.prototype = {
 
     terminate_stream: function () {
         
-        this.username = '';
         this.url = '';
         var container = document.getElementById('container'); 
         var placeholder = this.create_placeholder();
@@ -71,7 +55,7 @@ VideoPlayer.prototype = {
 
         placeholder.className = 'placeholder';
         placeholder.textContent = 'No video received yet!';
-        document.getElementsByTagName('body')[0].className = 'static';
+        document.body.className = 'static';
 
         return placeholder;
     },

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="video-player-widget" version="0.0.22">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="video-player-widget" version="0.1.0">
   <details>
     <title>Basic video widget</title>
     <email>bgrana@conwet.com</email>
@@ -9,8 +9,7 @@
     <authors>bgrana</authors>
   </details>
   <wiring>
-    <inputendpoint name="url" type="text" label="Video URL" description="video URL" friendcode="video_url"/>
-    <inputendpoint name="terminate_stream" type="text" label="Terminate stream" description="Event to terminate stream when user leaves the room" friendcode="terminate_stream"/>
+    <inputendpoint name="url" type="text" label="Video URL" description="video URL" friendcode="url"/>
   </wiring>
   <contents src="index.html"/>
   <rendering height="28" width="6"/>
