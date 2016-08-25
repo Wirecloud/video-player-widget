@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="video-player-widget" version="0.1.0">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="video-player-widget" version="0.1.1">
   <details>
     <title>Basic video widget</title>
     <email>bgrana@conwet.com</email>
@@ -8,6 +8,9 @@
     <description>Receives a video stream.</description>
     <authors>bgrana</authors>
   </details>
+  <preferences>
+      <preference type="text" name="initial-url" label="Initial URL"/>
+  </preferences>
   <wiring>
     <inputendpoint name="url" type="text" label="Video URL" description="video URL" friendcode="url"/>
   </wiring>

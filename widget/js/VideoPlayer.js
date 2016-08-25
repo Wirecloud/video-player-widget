@@ -3,10 +3,8 @@ var VideoPlayer = (function () {
 
     /*** CONSTRUCTOR ***/
     var VideoPlayer = function () {
-
-        this.url = '';
-
         MashupPlatform.wiring.registerCallback('url', this.recv_video.bind(this));
+        this.recv_video(MashupPlatform.prefs.get('initial-url'));
     };
 
 
