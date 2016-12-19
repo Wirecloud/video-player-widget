@@ -1,6 +1,6 @@
-# My project name widget
+# Video Player Widget
 
-The My project name widget is a WireCloud widget that provides ...
+Receives a video stream.
 
 ## Build
 

@@ -1,6 +1,6 @@
 ## Introduction
 
-The best project ever.
+Receives a video stream.
 
 ## Settings
 

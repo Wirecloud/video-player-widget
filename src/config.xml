@@ -7,6 +7,11 @@
     <smartphoneimage></smartphoneimage>
     <description>Receives a video stream.</description>
     <authors>bgrana</authors>
+    <longdescription>DESCRIPTION.md</longdescription>
+    <changelog>doc/changelog.md</changelog>
+    <doc>doc/userguide.md</doc>
+    <homepage>https://github.com/Wirecloud/video-player-widget</homepage>
+    <issuetracker>https://github.com/Wirecloud/video-player-widget/issues</issuetracker>
   </details>
   <preferences>
       <preference type="text" name="initial-url" label="Initial URL"/>

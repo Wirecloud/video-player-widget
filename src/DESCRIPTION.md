@@ -1,3 +1,1 @@
-This widget allows you to [...]
-
-## References
+Receives a video stream.
