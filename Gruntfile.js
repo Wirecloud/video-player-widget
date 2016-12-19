@@ -1,103 +1,190 @@
-/**
- * @file Gruntfile.js
- * @version 0.0.1
- * 
- * @copyright 2014 CoNWeT Lab., Universidad Politécnica de Madrid
- * @license Apache v2 (https://github.com/Wirecloud/room-manager-widget/blob/master/LICENSE)
+/*
+ * Copyright (c) 2016 Vendor
+ * Licensed under the MIT license.
  */
 
-module.exports = function(grunt) {
+var ConfigParser = require('wirecloud-config-parser');
+var parser = new ConfigParser('src/config.xml');
 
-  'use strict';
+module.exports = function (grunt) {
 
-  grunt.initConfig({
+    'use strict';
 
-    pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig({
 
-    banner: ' * @version <%= pkg.version %>\n' +
-            ' * \n' +
-            ' * @copyright 2014 <%= pkg.author %>\n' +
-            ' * @license <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
-            ' */',
+        isDev: grunt.option('dev') ? '-dev' : '',
+        metadata: parser.getData(),
 
-    concat: {
-      options: {
-        stripBanners: true
-      },
-      dist: {
-        options: {
-          banner: '/*!\n * @file <%= pkg.name %>.js\n<%= banner %>\n\n'
+        bower: {
+            install: {
+                options: {
+                    layout: function (type, component, source) {
+                        return type;
+                    },
+                    targetDir: './build/lib/lib'
+                }
+            }
         },
-        src: [
-          'widget/js/VideoPlayer.js'
-        ],
-        dest: 'widget/dist/js/<%= pkg.name %>.js'
-      }
-    },
 
-    uglify: {
-      options: {
-        preserveComments: false
-      },
-      dist: {
-        options: {
-          banner: '/*!\n * @file <%= pkg.name %>.min.js\n<%= banner %>\n'
+        eslint: {
+            widget: {
+                src: 'src/js/**/*.js'
+            },
+            grunt: {
+                options: {
+                    configFile: '.eslintrc-node'
+                },
+                src: 'Gruntfile.js',
+            },
+            test: {
+                options: {
+                    configFile: '.eslintrc-jasmine'
+                },
+                src: ['src/test/**/*.js', '!src/test/fixtures/']
+            }
         },
-        src: '<%= concat.dist.dest %>',
-        dest: 'widget/dist/js/<%= pkg.name %>.min.js'
-      }
-    },
 
-    less: {
-      dist: {
-        options: {
-          banner: '/*!\n * @file <%= pkg.name %>.css\n<%= banner %>\n\n'
+        copy: {
+            main: {
+                files: [
+                    {expand: true, cwd: 'src/js', src: '*', dest: 'build/src/js'}
+                ]
+            }
         },
-        src: [
-          'widget/less/widget.less'
-        ],
-        dest: 'widget/dist/css/<%= pkg.name %>.css'
-      }
-    },
 
-    cssmin: {
-      options: {
-        keepSpecialComments: 0
-      },
-      dist: {
-        options: {
-          banner: '/*!\n * @file <%= pkg.name %>.min.css\n<%= banner %>\n'
+        strip_code: {
+            multiple_files: {
+                src: ['build/src/js/**/*.js']
+            }
         },
-        src: '<%= less.dist.dest %>',
-        dest: 'widget/dist/css/<%= pkg.name %>.min.css'
-      }
-    },
 
-    compress: {
-      widget: {
-        options: {
-          archive: '<%= pkg.name %>.zip'
+        compress: {
+            widget: {
+                options: {
+                    mode: 'zip',
+                    archive: 'dist/<%= metadata.vendor %>_<%= metadata.name %>_<%= metadata.version %><%= isDev %>.wgt'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src',
+                        src: [
+                            'DESCRIPTION.md',
+                            'css/**/*',
+                            'doc/**/*',
+                            'images/**/*',
+                            'index.html',
+                            'config.xml'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        cwd: 'build/lib',
+                        src: [
+                            'lib/**/*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        cwd: 'build/src',
+                        src: [
+                            'js/**/*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        cwd: '.',
+                        src: [
+                            'LICENSE'
+                        ]
+                    }
+                ]
+            }
         },
-        files: [
-          {expand: true, src: ['**/*'], dest: './', cwd: 'widget'}
-        ]
-      }
-    }
 
-  });
+        clean: {
+            build: {
+                src: ['build', 'bower_components']
+            },
+            temp: {
+                src: ['build/src']
+            }
+        },
 
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+        jasmine: {
+            test: {
+                src: ['src/js/*.js', '!src/js/main.js'],
+                options: {
+                    specs: 'src/test/js/*Spec.js',
+                    helpers: ['src/test/helpers/*.js'],
+                    vendor: [
+                        'node_modules/jquery/dist/jquery.js',
+                        'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+                        'node_modules/mock-applicationmashup/lib/vendor/mockMashupPlatform.js',
+                        'src/test/vendor/*.js'
+                    ]
+                }
+            },
+            coverage: {
+                src: '<%= jasmine.test.src %>',
+                options: {
+                    helpers: '<%= jasmine.test.options.helpers %>',
+                    specs: '<%= jasmine.test.options.specs %>',
+                    vendor: '<%= jasmine.test.options.vendor %>',
+                    template: require('grunt-template-jasmine-istanbul'),
+                    templateOptions: {
+                        coverage: 'build/coverage/json/coverage.json',
+                        report: [
+                            {type: 'html', options: {dir: 'build/coverage/html'}},
+                            {type: 'cobertura', options: {dir: 'build/coverage/xml'}},
+                            {type: 'text-summary'}
+                        ]
+                    }
+                }
+            }
+        },
 
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
+        wirecloud: {
+            options: {
+                overwrite: false
+            },
+            publish: {
+                file: 'dist/<%= metadata.vendor %>_<%= metadata.name %>_<%= metadata.version %><%= isDev %>.wgt'
+            }
+        }
+    });
 
-  grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-wirecloud');
+    grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-contrib-jasmine'); // when test?
+    grunt.loadNpmTasks('gruntify-eslint');
+    grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-strip-code');
+    grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('js', ['concat:dist', 'uglify:dist']);
-  grunt.registerTask('css', ['less:dist', 'cssmin:dist']);
-  grunt.registerTask('zip', ['compress:widget']);
+    grunt.registerTask('test', [
+        'bower:install',
+        'eslint',
+        //'jasmine:coverage'
+    ]);
 
-  grunt.registerTask('default', ['js', 'css', 'zip']);
+    grunt.registerTask('build', [
+        'clean:temp',
+        'copy:main',
+        'strip_code',
+        'compress:widget'
+    ]);
+
+    grunt.registerTask('default', [
+        'test',
+        'build'
+    ]);
+
+    grunt.registerTask('publish', [
+        'default',
+        'wirecloud'
+    ]);
 
 };
