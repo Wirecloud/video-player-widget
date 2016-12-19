@@ -1,31 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="Vendor" name="widgetPlantilla" version="0.1.0">
-
-    <details>
-        <title>My project name</title>
-        <homepage>https://github.com/mognom/widgetPlantilla</homepage>
-        <authors>authorName</authors>
-        <email>authormail@mail.com</email>
-        <image></image>
-        <smartphoneimage></smartphoneimage>
-        <description>The best project ever.</description>
-        <longdescription>DESCRIPTION.md</longdescription>
-        <changelog>doc/changelog.md</changelog>
-        <doc>doc/userguide.md</doc>
-        <license>MIT</license>
-        <issuetracker>https://github.com/mognom/widgetPlantilla/issues</issuetracker>
-    </details>
-
-    <requirements>
-    </requirements>
-
-    <preferences>
-    </preferences>
-
-    <wiring>
-    </wiring>
-
-    <contents src="index.html"/>
-    <rendering height="300px" width="30%"/>
-
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="video-player-widget" version="0.1.1">
+  <details>
+    <title>Basic video widget</title>
+    <email>bgrana@conwet.com</email>
+    <image></image>
+    <smartphoneimage></smartphoneimage>
+    <description>Receives a video stream.</description>
+    <authors>bgrana</authors>
+  </details>
+  <preferences>
+      <preference type="text" name="initial-url" label="Initial URL"/>
+  </preferences>
+  <wiring>
+    <inputendpoint name="url" type="text" label="Video URL" description="video URL" friendcode="url"/>
+  </wiring>
+  <contents src="index.html"/>
+  <rendering height="28" width="6"/>
 </widget>
