@@ -11,7 +11,11 @@ window.VideoPlayer = (function () {
     /** * CONSTRUCTOR ***/
     var VideoPlayer = function () {
         MashupPlatform.wiring.registerCallback('url', this.recv_video.bind(this));
-        this.recv_video(MashupPlatform.prefs.get('initial-url'));
+
+        var url = MashupPlatform.prefs.get('initial-url').trim();
+        if (url !== "") {
+            this.recv_video(url);
+        }
     };
 
 
@@ -21,10 +25,24 @@ window.VideoPlayer = (function () {
         constructor: VideoPlayer,
 
 
-        recv_video: function (url) {
-            // Skip if the URI is empty
-            if (url === "") {
-                return;
+        recv_video: function (data) {
+            var url;
+
+            if (typeof data === "string") {
+                try {
+                    url = JSON.parse(data).url;
+                } catch (e) {
+                    // Is a normal string
+                }
+            } else {
+                url = data.url;
+            }
+
+            // Check if the URL is valid
+            try {
+                new URL(url);
+            } catch (e) {
+                throw new MashupPlatform.wiring.EndpointValueError("invalid url: " + e);
             }
 
             this.url = url;
@@ -63,9 +81,9 @@ window.VideoPlayer = (function () {
 
             var frame = document.createElement("iframe");
             frame.classList.add("youtubeVideo");
-            frame.setAttribute('src',url);
-            frame.setAttribute('frameborder',0);
-            frame.classList.add("allowfullscreen");
+            frame.setAttribute('src', url);
+            frame.setAttribute('frameborder', 0);
+            frame.setAttribute('allowfullscreen', 'allowfullscreen');
 
             var container = document.getElementById('container');
             remove_child_nodes(container);
