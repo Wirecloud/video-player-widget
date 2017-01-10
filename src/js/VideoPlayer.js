@@ -1,4 +1,6 @@
-(function () {
+/* export VideoPlayer */
+
+window.VideoPlayer = (function () {
     "use strict";
 
     /** * CONSTRUCTOR ***/
