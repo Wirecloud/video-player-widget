@@ -3,6 +3,11 @@
 window.VideoPlayer = (function () {
     "use strict";
 
+    var YOUTUBEHOSTS = [
+        "www.youtube.com",
+        "youtu.be",
+    ]
+
     /** * CONSTRUCTOR ***/
     var VideoPlayer = function () {
         MashupPlatform.wiring.registerCallback('url', this.recv_video.bind(this));
@@ -17,14 +22,55 @@ window.VideoPlayer = (function () {
 
 
         recv_video: function (url) {
+            // Skip if the URI is empty
+            if (url === "") {
+                return;
+            }
 
             this.url = url;
 
-            var container = document.getElementById('container');
-            var videoOutput = this.create_video(this.url);
+            // Handle youtube videos
+            if (YOUTUBEHOSTS.indexOf(new URL(this.url).host) !== -1) {
 
+                // Normalize host URL and build iframe uri
+                this.url = this.url.replace("youtu.be", "www.youtube.com/embed");
+                this.url = this.url.replace('/watch?v=','/embed/');
+
+                // Remove any html parameters
+                var i = this.url.indexOf("&");
+                if (i !== -1) {
+                    this.url = this.url.slice(0, i);
+                }
+
+                this.insertYoutubeVideo(this.url);
+
+            // Handle other videos
+            } else {
+                var container = document.getElementById('container');
+                var videoOutput = this.create_video(this.url);
+
+                remove_child_nodes(container);
+
+                container.appendChild(videoOutput);
+            }
+        },
+
+        // Create iframe and display the youtube video
+        insertYoutubeVideo: function (url) {
+
+            var videoOutput = document.createElement("div");
+            videoOutput.classList.add("youtubeDiv");
+
+            var frame = document.createElement("iframe");
+            frame.classList.add("youtubeVideo");
+            frame.setAttribute('src',url);
+            frame.setAttribute('frameborder',0);
+            frame.classList.add("allowfullscreen");
+
+            var container = document.getElementById('container');
             remove_child_nodes(container);
 
+            videoOutput.appendChild(frame);
             container.appendChild(videoOutput);
         },
 
