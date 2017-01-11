@@ -32,7 +32,8 @@ window.VideoPlayer = (function () {
                 try {
                     url = JSON.parse(data).url;
                 } catch (e) {
-                    // Is a normal string
+                    // It's a normal string
+                    url = data;
                 }
             } else {
                 url = data.url;
